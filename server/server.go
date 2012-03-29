@@ -59,7 +59,7 @@ func serve(node string, nc net.Conn, st *store.Store, p consensus.Proposer, w bo
 	// simply call SET('/eph', value), where /eph is a symlink to
 	// that client's ephemeral node.
 	log.Println("** setting ephemeral node", eph_node)
-	ev := consensus.Set(p, eph_node, []byte("ACTIVE"), store.Missing)
+	ev := consensus.Set(p, eph_node, []byte(""), store.Missing)
 	if ev.Err != nil {
 		log.Println("** failed to set ephemeral node:", ev.Err)
 		nc.Close()
