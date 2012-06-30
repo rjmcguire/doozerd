@@ -3,30 +3,30 @@ package consensus
 import (
 	"code.google.com/p/goprotobuf/proto"
 	"container/heap"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"log"
 	"math/rand"
 	"net"
 	"time"
 )
 
-const initialWaitBound = 1e6 // ns == 1ms
+const initialWaitBound = 1e6	// ns == 1ms
 
 type run struct {
-	seqn int64
-	self string
-	cals []string
-	addr []*net.UDPAddr
+	seqn	int64
+	self	string
+	cals	[]string
+	addr	[]*net.UDPAddr
 
-	c coordinator
-	a acceptor
-	l learner
+	c	coordinator
+	a	acceptor
+	l	learner
 
-	out   chan<- Packet
-	ops   chan<- store.Op
-	bound int64
-	ntick int
-	prop  bool
+	out	chan<- Packet
+	ops	chan<- store.Op
+	bound	int64
+	ntick	int
+	prop	bool
 }
 
 func (r *run) quorum() int {
@@ -43,7 +43,7 @@ func (r *run) update(p *packet, from int, ticks heap.Interface) {
 	if tick {
 		r.ntick++
 		r.bound *= 2
-		t := rand.Int63n(r.bound + 1) // +1 because it panics if bound is 0.
+		t := rand.Int63n(r.bound + 1)	// +1 because it panics if bound is 0.
 		log.Printf("sched tick=%d seqn=%d t=%d", r.ntick, r.seqn, t)
 		schedTrigger(ticks, r.seqn, time.Now().UnixNano(), t)
 	}

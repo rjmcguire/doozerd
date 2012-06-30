@@ -2,8 +2,8 @@ package peer
 
 import (
 	"github.com/bmizerany/assert"
-	"github.com/ha/doozer"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozer"
+	"github.com/4ad/doozerd/store"
 	"os/exec"
 
 	"testing"
@@ -83,7 +83,7 @@ func TestDoozerGetWithRev(t *testing.T) {
 	rev1, err := cl.Set("/x", store.Missing, []byte{'a'})
 	assert.Equal(t, nil, err)
 
-	v, rev, err := cl.Get("/x", &rev1) // Use the snapshot.
+	v, rev, err := cl.Get("/x", &rev1)	// Use the snapshot.
 	assert.Equal(t, nil, err)
 	assert.Equal(t, rev1, rev)
 	assert.Equal(t, []byte{'a'}, v)
@@ -91,12 +91,12 @@ func TestDoozerGetWithRev(t *testing.T) {
 	rev2, err := cl.Set("/x", rev, []byte{'b'})
 	assert.Equal(t, nil, err)
 
-	v, rev, err = cl.Get("/x", nil) // Read the new value.
+	v, rev, err = cl.Get("/x", nil)	// Read the new value.
 	assert.Equal(t, nil, err)
 	assert.Equal(t, rev2, rev)
 	assert.Equal(t, []byte{'b'}, v)
 
-	v, rev, err = cl.Get("/x", &rev1) // Read the saved value again.
+	v, rev, err = cl.Get("/x", &rev1)	// Read the saved value again.
 	assert.Equal(t, nil, err)
 	assert.Equal(t, rev1, rev)
 	assert.Equal(t, []byte{'a'}, v)

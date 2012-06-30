@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/ha/doozerd/consensus"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/consensus"
+	"github.com/4ad/doozerd/store"
 	"log"
 	"net"
 	"syscall"
@@ -42,14 +42,14 @@ func serve(node string, nc net.Conn, st *store.Store, p consensus.Proposer, w bo
 	eph_node := "/ctl/node/"+node+"/client/" + client_addr
 
 	c := &conn{
-		c:        nc,
-		addr:     nc.RemoteAddr().String(),
-		eph_node: eph_node,
-		st:       st,
-		p:        p,
-		canWrite: w,
-		rwsk:     rwsk,
-		rosk:     rosk,
+		c:		nc,
+		addr:		nc.RemoteAddr().String(),
+		eph_node:	eph_node,
+		st:		st,
+		p:		p,
+		canWrite:	w,
+		rwsk:		rwsk,
+		rosk:		rosk,
 	}
 
 	// create the ephemeral node on client connect under this
@@ -66,8 +66,7 @@ func serve(node string, nc net.Conn, st *store.Store, p consensus.Proposer, w bo
 		return
 	}
 
-
-	c.grant("") // start as if the client supplied a blank password
+	c.grant("")	// start as if the client supplied a blank password
 	c.serve()
 
 	// delete the ephemeral node on disconnect

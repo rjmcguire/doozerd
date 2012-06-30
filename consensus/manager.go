@@ -3,7 +3,7 @@ package consensus
 import (
 	"code.google.com/p/goprotobuf/proto"
 	"container/heap"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"log"
 	"net"
 	"sort"
@@ -11,7 +11,7 @@ import (
 )
 
 type packet struct {
-	Addr *net.UDPAddr
+	Addr	*net.UDPAddr
 	msg
 }
 
@@ -43,13 +43,13 @@ func (p *packets) Swap(i, j int) {
 }
 
 type Packet struct {
-	Addr *net.UDPAddr
-	Data []byte
+	Addr	*net.UDPAddr
+	Data	[]byte
 }
 
 type trigger struct {
-	t int64 // trigger time
-	n int64 // seqn
+	t	int64	// trigger time
+	n	int64	// seqn
 }
 
 type triggers []trigger
@@ -81,42 +81,42 @@ func (t *triggers) Swap(i, j int) {
 
 type Stats struct {
 	// Current queue sizes
-	Runs        int
-	WaitPackets int
-	WaitTicks   int
+	Runs		int
+	WaitPackets	int
+	WaitTicks	int
 
 	// Totals over all time
-	TotalRuns  int64
-	TotalFills int64
-	TotalTicks int64
-	TotalRecv  [nmsg]int64
+	TotalRuns	int64
+	TotalFills	int64
+	TotalTicks	int64
+	TotalRecv	[nmsg]int64
 }
 
 // DefRev is the rev in which this manager was defined;
 // it will participate starting at DefRev+Alpha.
 type Manager struct {
-	Self   string
-	DefRev int64
-	Alpha  int64
-	In     <-chan Packet
-	Out    chan<- Packet
-	Ops    chan<- store.Op
-	PSeqn  chan<- int64
-	Props  <-chan *Prop
-	TFill  int64
-	Store  *store.Store
-	Ticker <-chan time.Time
-	Stats  Stats
-	run    map[int64]*run
-	next   int64 // unused seqn
-	fill   triggers
-	packet packets
-	tick   triggers
+	Self	string
+	DefRev	int64
+	Alpha	int64
+	In	<-chan Packet
+	Out	chan<- Packet
+	Ops	chan<- store.Op
+	PSeqn	chan<- int64
+	Props	<-chan *Prop
+	TFill	int64
+	Store	*store.Store
+	Ticker	<-chan time.Time
+	Stats	Stats
+	run	map[int64]*run
+	next	int64	// unused seqn
+	fill	triggers
+	packet	packets
+	tick	triggers
 }
 
 type Prop struct {
-	Seqn int64
-	Mut  []byte
+	Seqn	int64
+	Mut	[]byte
 }
 
 var tickTemplate = &msg{Cmd: tick}
@@ -126,7 +126,7 @@ func (m *Manager) Run() {
 	m.run = make(map[int64]*run)
 	runCh, err := m.Store.Wait(store.Any, m.DefRev)
 	if err != nil {
-		panic(err) // can't happen
+		panic(err)	// can't happen
 	}
 
 	for {
@@ -143,7 +143,7 @@ func (m *Manager) Run() {
 
 			runCh, err = m.Store.Wait(store.Any, e.Seqn+1)
 			if err != nil {
-				panic(err) // can't happen
+				panic(err)	// can't happen
 			}
 
 			m.event(e)
@@ -223,9 +223,9 @@ func sendLearn(out chan<- Packet, p *packet, st *store.Store) {
 		} else {
 			e := <-ch
 			m := msg{
-				Seqn:  &e.Seqn,
-				Cmd:   learn,
-				Value: []byte(e.Mut),
+				Seqn:	&e.Seqn,
+				Cmd:	learn,
+				Value:	[]byte(e.Mut),
 			}
 			buf, _ := proto.Marshal(&m)
 			out <- Packet{p.Addr, buf}

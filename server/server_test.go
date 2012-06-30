@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"code.google.com/p/goprotobuf/proto"
 	"github.com/bmizerany/assert"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"io"
 
 	"testing"
@@ -22,7 +22,7 @@ func (b bchan) Write(buf []byte) (int, error) {
 }
 
 func (b bchan) Read(buf []byte) (int, error) {
-	return 0, io.EOF // not implemented
+	return 0, io.EOF	// not implemented
 }
 
 func mustUnmarshal(b []byte) (r *response) {
@@ -42,13 +42,13 @@ func assertResponseErrCode(t *testing.T, exp response_Err, c *conn) {
 
 func TestDelNilFields(t *testing.T) {
 	c := &conn{
-		c:        &bytes.Buffer{},
-		canWrite: true,
-		waccess:  true,
+		c:		&bytes.Buffer{},
+		canWrite:	true,
+		waccess:	true,
 	}
 	tx := &txn{
-		c:   c,
-		req: request{Tag: proto.Int32(1)},
+		c:	c,
+		req:	request{Tag: proto.Int32(1)},
 	}
 	tx.del()
 	assertResponseErrCode(t, response_MISSING_ARG, c)
@@ -56,13 +56,13 @@ func TestDelNilFields(t *testing.T) {
 
 func TestSetNilFields(t *testing.T) {
 	c := &conn{
-		c:        &bytes.Buffer{},
-		canWrite: true,
-		waccess:  true,
+		c:		&bytes.Buffer{},
+		canWrite:	true,
+		waccess:	true,
 	}
 	tx := &txn{
-		c:   c,
-		req: request{Tag: proto.Int32(1)},
+		c:	c,
+		req:	request{Tag: proto.Int32(1)},
 	}
 	tx.set()
 	assertResponseErrCode(t, response_MISSING_ARG, c)
@@ -71,13 +71,13 @@ func TestSetNilFields(t *testing.T) {
 func TestServerNoAccess(t *testing.T) {
 	b := make(bchan, 2)
 	c := &conn{
-		c:        b,
-		canWrite: true,
-		st:       store.New(),
+		c:		b,
+		canWrite:	true,
+		st:		store.New(),
 	}
 	tx := &txn{
-		c:   c,
-		req: request{Tag: proto.Int32(1)},
+		c:	c,
+		req:	request{Tag: proto.Int32(1)},
 	}
 
 	for i, op := range ops {
@@ -93,13 +93,13 @@ func TestServerNoAccess(t *testing.T) {
 func TestServerRo(t *testing.T) {
 	b := make(bchan, 2)
 	c := &conn{
-		c:        b,
-		canWrite: true,
-		st:       store.New(),
+		c:		b,
+		canWrite:	true,
+		st:		store.New(),
 	}
 	tx := &txn{
-		c:   c,
-		req: request{Tag: proto.Int32(1)},
+		c:	c,
+		req:	request{Tag: proto.Int32(1)},
 	}
 
 	wops := []int32{int32(request_DEL), int32(request_NOP), int32(request_SET)}

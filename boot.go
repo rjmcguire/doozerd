@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base32"
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 	"time"
 )
 
@@ -59,7 +59,7 @@ func elect(name, id, laddr string, b *doozer.Conn) *doozer.Conn {
 		panic(err)
 	}
 
-	return nil // we are the seed node -- don't attach
+	return nil	// we are the seed node -- don't attach
 }
 
 func lookupAndAttach(b *doozer.Conn, name string) *doozer.Conn {
@@ -173,7 +173,7 @@ func lookup(b *doozer.Conn, name string) (as []string) {
 }
 
 func randId() string {
-	const bits = 80 // enough for 10**8 ids with p(collision) < 10**-8
+	const bits = 80	// enough for 10**8 ids with p(collision) < 10**-8
 	rnd := make([]byte, bits/8)
 
 	n, err := rand.Read(rnd)

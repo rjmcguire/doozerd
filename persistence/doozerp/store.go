@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 )
 
 // A mutation is the pair of the human readable and binary
 // representation a a doozer operation.
 type mutation struct {
-	mut string
-	ev  doozer.Event
+	mut	string
+	ev	doozer.Event
 }
 
 // Store saves new mutations on disk.

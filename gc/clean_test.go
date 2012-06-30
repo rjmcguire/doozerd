@@ -2,7 +2,7 @@ package gc
 
 import (
 	"github.com/bmizerany/assert"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"testing"
 	"time"
 )
@@ -24,7 +24,7 @@ func TestGcClean(t *testing.T) {
 	_, err := st.Wait(store.Any, 1)
 	assert.Equal(t, nil, err)
 	ticker <- time.Unix(0, 1)
-	ticker <- time.Unix(0, 1) // Extra tick to ensure the last st.Clean has completed
+	ticker <- time.Unix(0, 1)	// Extra tick to ensure the last st.Clean has completed
 	_, err = st.Wait(store.Any, 1)
 	assert.Equal(t, store.ErrTooLate, err)
 }

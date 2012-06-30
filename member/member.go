@@ -1,8 +1,8 @@
 package member
 
 import (
-	"github.com/ha/doozerd/consensus"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/consensus"
+	"github.com/4ad/doozerd/store"
 	"log"
 )
 

@@ -2,8 +2,8 @@ package server
 
 import (
 	"code.google.com/p/goprotobuf/proto"
-	"github.com/ha/doozerd/consensus"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/consensus"
+	"github.com/4ad/doozerd/store"
 	"io"
 	"log"
 	"sort"
@@ -11,27 +11,27 @@ import (
 )
 
 type txn struct {
-	c    *conn
-	req  request
-	resp response
+	c	*conn
+	req	request
+	resp	response
 }
 
 var ops = map[int32]func(*txn){
-	int32(request_DEL):    (*txn).del,
-	int32(request_GET):    (*txn).get,
-	int32(request_GETDIR): (*txn).getdir,
-	int32(request_NOP):    (*txn).nop,
-	int32(request_REV):    (*txn).rev,
-	int32(request_SET):    (*txn).set,
-	int32(request_STAT):   (*txn).stat,
-	int32(request_WAIT):   (*txn).wait,
-	int32(request_WALK):   (*txn).walk,
-	int32(request_ACCESS): (*txn).access,
+	int32(request_DEL):	(*txn).del,
+	int32(request_GET):	(*txn).get,
+	int32(request_GETDIR):	(*txn).getdir,
+	int32(request_NOP):	(*txn).nop,
+	int32(request_REV):	(*txn).rev,
+	int32(request_SET):	(*txn).set,
+	int32(request_STAT):	(*txn).stat,
+	int32(request_WAIT):	(*txn).wait,
+	int32(request_WALK):	(*txn).walk,
+	int32(request_ACCESS):	(*txn).access,
 }
 
 // response flags
 const (
-	_ = 1 << iota
+	_	= 1 << iota
 	_
 	set
 	del
@@ -77,7 +77,7 @@ func (t *txn) get() {
 		}
 
 		t.resp.Rev = &rev
-		if len(v) == 1 { // not missing
+		if len(v) == 1 {	// not missing
 			t.resp.Value = []byte(v[0])
 		}
 		t.respond()

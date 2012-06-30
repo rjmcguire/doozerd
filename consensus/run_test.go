@@ -3,14 +3,14 @@ package consensus
 import (
 	"code.google.com/p/goprotobuf/proto"
 	"github.com/bmizerany/assert"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"net"
 	"testing"
 )
 
 const (
-	node = "/ctl/node"
-	cal  = "/ctl/cal"
+	node	= "/ctl/node"
+	cal	= "/ctl/cal"
 )
 
 type msgSlot struct {
@@ -40,12 +40,12 @@ func TestRunVoteDelivered(t *testing.T) {
 
 	p := packet{
 		msg: msg{
-			Seqn:  proto.Int64(1),
-			Cmd:   vote,
-			Vrnd:  proto.Int64(1),
-			Value: []byte("foo"),
+			Seqn:	proto.Int64(1),
+			Cmd:	vote,
+			Vrnd:	proto.Int64(1),
+			Value:	[]byte("foo"),
 		},
-		Addr: &net.UDPAddr{net.IP{1, 2, 3, 4}, 5},
+		Addr:	&net.UDPAddr{net.IP{1, 2, 3, 4}, 5},
 	}
 
 	r.update(&p, 0, new(triggers))
@@ -84,9 +84,9 @@ func TestRunSendsCoordPacket(t *testing.T) {
 
 	var got msg
 	exp := msg{
-		Seqn: proto.Int64(0),
-		Cmd:  invite,
-		Crnd: proto.Int64(1),
+		Seqn:	proto.Int64(0),
+		Cmd:	invite,
+		Crnd:	proto.Int64(1),
 	}
 
 	r.update(&packet{msg: *newPropose("foo")}, -1, new(triggers))
@@ -119,11 +119,11 @@ func TestRunSendsAcceptorPacket(t *testing.T) {
 
 	var got msg
 	exp := msg{
-		Seqn:  proto.Int64(0),
-		Cmd:   rsvp,
-		Crnd:  proto.Int64(1),
-		Vrnd:  proto.Int64(0),
-		Value: []byte{},
+		Seqn:	proto.Int64(0),
+		Cmd:	rsvp,
+		Crnd:	proto.Int64(1),
+		Vrnd:	proto.Int64(0),
+		Value:	[]byte{},
 	}
 
 	r.update(&packet{msg: *newInviteSeqn1(1)}, 0, new(triggers))
@@ -144,9 +144,9 @@ func TestRunSendsLearnerPacket(t *testing.T) {
 
 	var got msg
 	exp := msg{
-		Seqn:  proto.Int64(0),
-		Cmd:   learn,
-		Value: []byte("foo"),
+		Seqn:	proto.Int64(0),
+		Cmd:	learn,
+		Value:	[]byte("foo"),
 	}
 
 	r.update(&packet{msg: *newVote(1, "foo")}, 0, new(triggers))
@@ -183,9 +183,9 @@ func TestRunBroadcastThree(t *testing.T) {
 	c <- Packet{}
 
 	exp := msg{
-		Seqn: proto.Int64(1),
-		Cmd:  invite,
-		Crnd: proto.Int64(1),
+		Seqn:	proto.Int64(1),
+		Cmd:	invite,
+		Crnd:	proto.Int64(1),
 	}
 
 	addr := make([]*net.UDPAddr, len(r.addr))
@@ -219,9 +219,9 @@ func TestRunBroadcastFive(t *testing.T) {
 	c <- Packet{}
 
 	exp := msg{
-		Seqn: proto.Int64(1),
-		Cmd:  invite,
-		Crnd: proto.Int64(1),
+		Seqn:	proto.Int64(1),
+		Cmd:	invite,
+		Crnd:	proto.Int64(1),
 	}
 
 	addr := make([]*net.UDPAddr, len(r.addr))
@@ -255,14 +255,14 @@ func TestRunBroadcastNil(t *testing.T) {
 
 func TestRunIsLeader(t *testing.T) {
 	r := &run{
-		cals: []string{"a", "b", "c"}, // len(cals) == 3
-		seqn: 3,                       // 3 % 3 == 0
+		cals:	[]string{"a", "b", "c"},	// len(cals) == 3
+		seqn:	3,				// 3 % 3 == 0
 	}
 
-	assert.T(t, r.isLeader("a"))  // index == 0
-	assert.T(t, !r.isLeader("b")) // index == 1
-	assert.T(t, !r.isLeader("c")) // index == 2
-	assert.T(t, !r.isLeader("x")) // index DNE
+	assert.T(t, r.isLeader("a"))	// index == 0
+	assert.T(t, !r.isLeader("b"))	// index == 1
+	assert.T(t, !r.isLeader("c"))	// index == 2
+	assert.T(t, !r.isLeader("x"))	// index DNE
 }
 
 func TestRunReturnTrueIfLearned(t *testing.T) {
@@ -271,9 +271,9 @@ func TestRunReturnTrueIfLearned(t *testing.T) {
 	r.ops = make(chan store.Op, 100)
 
 	p := packet{msg: msg{
-		Seqn:  proto.Int64(1),
-		Cmd:   learn,
-		Value: []byte("foo"),
+		Seqn:	proto.Int64(1),
+		Cmd:	learn,
+		Value:	[]byte("foo"),
 	}}
 
 	r.update(&p, 0, new(triggers))
@@ -286,9 +286,9 @@ func TestRunReturnFalseIfNotLearned(t *testing.T) {
 	r.ops = make(chan store.Op, 100)
 
 	p := packet{msg: msg{
-		Seqn:  proto.Int64(1),
-		Cmd:   invite,
-		Value: []byte("foo"),
+		Seqn:	proto.Int64(1),
+		Cmd:	invite,
+		Value:	[]byte("foo"),
 	}}
 
 	r.update(&p, 0, new(triggers))

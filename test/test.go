@@ -1,14 +1,14 @@
 package test
 
 import (
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"io"
 	"sync/atomic"
 )
 
 type FakeProposer struct {
 	*store.Store
-	seqn int64
+	seqn	int64
 }
 
 func (fp *FakeProposer) Propose(v []byte) store.Event {

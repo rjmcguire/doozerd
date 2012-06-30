@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/ha/doozer"
-	st "github.com/ha/doozerd/store"
+	"github.com/4ad/doozer"
+	st "github.com/4ad/doozerd/store"
 	"regexp"
 )
 
-var exclude = regexp.MustCompile("^/ctl") // private doozer stuff.
+var exclude = regexp.MustCompile("^/ctl")	// private doozer stuff.
 
 // encode takes the binary representation of an operation
 // and returns the human readable form.
@@ -25,9 +25,9 @@ func encode(ev doozer.Event) (mut string) {
 // events to be saved by Store.
 func monitor() {
 	var (
-		ev  doozer.Event
-		err error
-		rev int64 = -1
+		ev	doozer.Event
+		err	error
+		rev	int64	= -1
 	)
 	for {
 		ev, err = conn.Wait("/**", rev)

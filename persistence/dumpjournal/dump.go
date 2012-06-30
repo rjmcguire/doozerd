@@ -3,15 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ha/doozerd/persistence"
+	"github.com/4ad/doozerd/persistence"
 	"io"
 	"os"
 	"path"
 )
 
 var (
-	f        = flag.Bool("f", false, "try to fix a broken journal")
-	progname = path.Base(os.Args[0])
+	f		= flag.Bool("f", false, "try to fix a broken journal")
+	progname	= path.Base(os.Args[0])
 )
 
 func usage() {
@@ -25,7 +25,7 @@ func logf(format string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, format+"\n", args...)
 }
 
-func log(args ...interface{}) { logf("%v", args...) }
+func log(args ...interface{})	{ logf("%v", args...) }
 
 func main() {
 	flag.Usage = usage

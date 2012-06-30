@@ -3,7 +3,7 @@ package consensus
 import (
 	"errors"
 	"github.com/bmizerany/assert"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"net"
 	"testing"
 	"time"
@@ -24,17 +24,17 @@ func TestConsensusOne(t *testing.T) {
 	props := make(chan *Prop)
 
 	m := &Manager{
-		Self:   self,
-		DefRev: 2,
-		Alpha:  alpha,
-		In:     in,
-		Out:    out,
-		Ops:    st.Ops,
-		PSeqn:  seqns,
-		Props:  props,
-		TFill:  10e9,
-		Store:  st,
-		Ticker: time.Tick(10e6),
+		Self:	self,
+		DefRev:	2,
+		Alpha:	alpha,
+		In:	in,
+		Out:	out,
+		Ops:	st.Ops,
+		PSeqn:	seqns,
+		Props:	props,
+		TFill:	10e9,
+		Store:	st,
+		Ticker:	time.Tick(10e6),
 	}
 	go m.Run()
 
@@ -53,12 +53,12 @@ func TestConsensusOne(t *testing.T) {
 	e := <-w
 
 	exp := store.Event{
-		Seqn: 3,
-		Path: "/ctl/err",
-		Body: "bad mutation",
-		Rev:  3,
-		Mut:  "foo",
-		Err:  errors.New("bad mutation"),
+		Seqn:	3,
+		Path:	"/ctl/err",
+		Body:	"bad mutation",
+		Rev:	3,
+		Mut:	"foo",
+		Err:	errors.New("bad mutation"),
 	}
 
 	e.Getter = nil
@@ -86,17 +86,17 @@ func TestConsensusTwo(t *testing.T) {
 	aseqns := make(chan int64, alpha)
 	aprops := make(chan *Prop)
 	am := &Manager{
-		Self:   a,
-		DefRev: 5,
-		Alpha:  alpha,
-		In:     ain,
-		Out:    aout,
-		Ops:    st.Ops,
-		PSeqn:  aseqns,
-		Props:  aprops,
-		TFill:  10e9,
-		Store:  st,
-		Ticker: time.Tick(10e6),
+		Self:	a,
+		DefRev:	5,
+		Alpha:	alpha,
+		In:	ain,
+		Out:	aout,
+		Ops:	st.Ops,
+		PSeqn:	aseqns,
+		Props:	aprops,
+		TFill:	10e9,
+		Store:	st,
+		Ticker:	time.Tick(10e6),
 	}
 	go am.Run()
 
@@ -105,17 +105,17 @@ func TestConsensusTwo(t *testing.T) {
 	bseqns := make(chan int64, alpha)
 	bprops := make(chan *Prop)
 	bm := &Manager{
-		Self:   b,
-		DefRev: 5,
-		Alpha:  alpha,
-		In:     bin,
-		Out:    bout,
-		Ops:    st.Ops,
-		PSeqn:  bseqns,
-		Props:  bprops,
-		TFill:  10e9,
-		Store:  st,
-		Ticker: time.Tick(10e6),
+		Self:	b,
+		DefRev:	5,
+		Alpha:	alpha,
+		In:	bin,
+		Out:	bout,
+		Ops:	st.Ops,
+		PSeqn:	bseqns,
+		Props:	bprops,
+		TFill:	10e9,
+		Store:	st,
+		Ticker:	time.Tick(10e6),
 	}
 	go bm.Run()
 
@@ -152,12 +152,12 @@ func TestConsensusTwo(t *testing.T) {
 	e := <-w
 
 	exp := store.Event{
-		Seqn: 6,
-		Path: "/ctl/err",
-		Body: "bad mutation",
-		Rev:  6,
-		Mut:  "foo",
-		Err:  errors.New("bad mutation"),
+		Seqn:	6,
+		Path:	"/ctl/err",
+		Body:	"bad mutation",
+		Rev:	6,
+		Mut:	"foo",
+		Err:	errors.New("bad mutation"),
 	}
 
 	e.Getter = nil

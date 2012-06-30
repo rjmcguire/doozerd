@@ -9,27 +9,27 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ha/doozer"
-	"github.com/ha/doozerd/persistence"
+	"github.com/4ad/doozer"
+	"github.com/4ad/doozerd/persistence"
 	"os"
 	"strconv"
 )
 
 var (
-	buri = flag.String("b", "", "the DzNS uri")
-	f    = flag.Bool("f", false, "try to fix a broken journal")
-	j    = flag.String("j", "journal", "file to log mutations")
-	r    = flag.Bool("r", false, "restore from file")
-	uri  = flag.String("a", "doozer:?ca=127.0.0.1:8046", "the address to bind to")
-	v    = flag.Bool("v", false, "print each mutation on stdout")
+	buri	= flag.String("b", "", "the DzNS uri")
+	f	= flag.Bool("f", false, "try to fix a broken journal")
+	j	= flag.String("j", "journal", "file to log mutations")
+	r	= flag.Bool("r", false, "restore from file")
+	uri	= flag.String("a", "doozer:?ca=127.0.0.1:8046", "the address to bind to")
+	v	= flag.Bool("v", false, "print each mutation on stdout")
 )
 
 var (
-	conn    *doozer.Conn           // connection to the cluster.
-	id      = 0                    // client id.
-	journal *persistence.Journal   // journal to log to.
-	notify  = make(chan *mutation) // ack. write operation.
-	store   = make(chan *mutation) // save to disk.
+	conn	*doozer.Conn		// connection to the cluster.
+	id	= 0			// client id.
+	journal	*persistence.Journal	// journal to log to.
+	notify	= make(chan *mutation)	// ack. write operation.
+	store	= make(chan *mutation)	// save to disk.
 )
 
 func usage() {
@@ -43,14 +43,14 @@ func logf(format string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, format+"\n", args...)
 }
 
-func log(args ...interface{}) { logf("%v", args...) }
+func log(args ...interface{})	{ logf("%v", args...) }
 
 func fatalf(format string, args ...interface{}) {
 	logf(format, args...)
 	os.Exit(2)
 }
 
-func fatal(args ...interface{}) { fatalf("%v", args...) }
+func fatal(args ...interface{})	{ fatalf("%v", args...) }
 
 // dial connects to the server.
 func dial() {

@@ -4,7 +4,7 @@ import (
 	"code.google.com/p/goprotobuf/proto"
 	"container/heap"
 	"github.com/bmizerany/assert"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"net"
 	"sort"
 	"testing"
@@ -54,18 +54,18 @@ func TestRecvPacket(t *testing.T) {
 	x := &net.UDPAddr{net.IP{1, 2, 3, 4}, 5}
 
 	p := recvPacket(q, Packet{x, mustMarshal(&msg{
-		Seqn: proto.Int64(1),
-		Cmd:  invite,
+		Seqn:	proto.Int64(1),
+		Cmd:	invite,
 	})})
 	assert.Equal(t, &packet{x, msg{Seqn: proto.Int64(1), Cmd: invite}}, p)
 	p = recvPacket(q, Packet{x, mustMarshal(&msg{
-		Seqn: proto.Int64(2),
-		Cmd:  invite,
+		Seqn:	proto.Int64(2),
+		Cmd:	invite,
 	})})
 	assert.Equal(t, &packet{x, msg{Seqn: proto.Int64(2), Cmd: invite}}, p)
 	p = recvPacket(q, Packet{x, mustMarshal(&msg{
-		Seqn: proto.Int64(3),
-		Cmd:  invite,
+		Seqn:	proto.Int64(3),
+		Cmd:	invite,
 	})})
 	assert.Equal(t, &packet{x, msg{Seqn: proto.Int64(3), Cmd: invite}}, p)
 	assert.Equal(t, 3, q.Len())
@@ -120,8 +120,8 @@ func TestManagerPacketProcessing(t *testing.T) {
 	m.event(<-mustWait(st, 2))
 
 	recvPacket(&m.packet, Packet{
-		Data: mustMarshal(&msg{Seqn: proto.Int64(2), Cmd: learn, Value: []byte("foo")}),
-		Addr: &net.UDPAddr{net.IP{127, 0, 0, 1}, 9999},
+		Data:	mustMarshal(&msg{Seqn: proto.Int64(2), Cmd: learn, Value: []byte("foo")}),
+		Addr:	&net.UDPAddr{net.IP{127, 0, 0, 1}, 9999},
 	})
 	m.pump()
 	assert.Equal(t, 0, m.packet.Len())
@@ -155,11 +155,11 @@ func TestManagerFilterPropSeqn(t *testing.T) {
 	defer close(st.Ops)
 
 	m := &Manager{
-		DefRev: 2,
-		Alpha:  1,
-		Self:   "b",
-		PSeqn:  ps,
-		Store:  st,
+		DefRev:	2,
+		Alpha:	1,
+		Self:	"b",
+		PSeqn:	ps,
+		Store:	st,
 	}
 	go m.Run()
 
@@ -187,9 +187,9 @@ func TestManagerProposeFill(t *testing.T) {
 	var m Manager
 	m.Self = "a"
 	m.run = map[int64]*run{
-		6: &run{seqn: 6, cals: []string{"a", "b", "c"}},
-		7: &run{seqn: 7, cals: []string{"a", "b", "c"}},
-		8: &run{seqn: 8, cals: []string{"a", "b", "c"}},
+		6:	&run{seqn: 6, cals: []string{"a", "b", "c"}},
+		7:	&run{seqn: 7, cals: []string{"a", "b", "c"}},
+		8:	&run{seqn: 8, cals: []string{"a", "b", "c"}},
 	}
 	exp := triggers{
 		{123, 7},
@@ -244,13 +244,13 @@ func TestManagerEvent(t *testing.T) {
 	defer close(st.Ops)
 
 	st.Ops <- store.Op{
-		Seqn: 1,
-		Mut:  store.MustEncodeSet(node+"/a/addr", "1.2.3.4:5", 0),
+		Seqn:	1,
+		Mut:	store.MustEncodeSet(node+"/a/addr", "1.2.3.4:5", 0),
 	}
 
 	st.Ops <- store.Op{
-		Seqn: 2,
-		Mut:  store.MustEncodeSet(cal+"/1", "a", 0),
+		Seqn:	2,
+		Mut:	store.MustEncodeSet(cal+"/1", "a", 0),
 	}
 
 	ch, err := st.Wait(store.Any, 2)
@@ -261,35 +261,35 @@ func TestManagerEvent(t *testing.T) {
 	x, _ := net.ResolveUDPAddr("udp", "1.2.3.4:5")
 	pseqn := make(chan int64, 1)
 	m := &Manager{
-		Alpha: alpha,
-		Self:  "a",
-		PSeqn: pseqn,
-		Ops:   st.Ops,
-		Out:   make(chan Packet),
-		run:   runs,
+		Alpha:	alpha,
+		Self:	"a",
+		PSeqn:	pseqn,
+		Ops:	st.Ops,
+		Out:	make(chan Packet),
+		run:	runs,
 	}
 	m.event(<-ch)
 
 	exp := &run{
-		self:  "a",
-		seqn:  2 + alpha,
-		cals:  []string{"a"},
-		addr:  []*net.UDPAddr{x},
-		ops:   st.Ops,
-		out:   m.Out,
-		bound: initialWaitBound,
+		self:	"a",
+		seqn:	2 + alpha,
+		cals:	[]string{"a"},
+		addr:	[]*net.UDPAddr{x},
+		ops:	st.Ops,
+		out:	m.Out,
+		bound:	initialWaitBound,
 	}
 	exp.c = coordinator{
-		crnd: 1,
-		size: 1,
-		quor: exp.quorum(),
+		crnd:	1,
+		size:	1,
+		quor:	exp.quorum(),
 	}
 	exp.l = learner{
-		round:  1,
-		size:   1,
-		quorum: int64(exp.quorum()),
-		votes:  map[string]int64{},
-		voted:  []bool{false},
+		round:	1,
+		size:	1,
+		quorum:	int64(exp.quorum()),
+		votes:	map[string]int64{},
+		voted:	[]bool{false},
 	}
 
 	assert.Equal(t, 1, len(runs))
@@ -311,36 +311,36 @@ func TestManagerRemoveLastCal(t *testing.T) {
 	x, _ := net.ResolveUDPAddr("udp", "1.2.3.4:5")
 	pseqn := make(chan int64, 100)
 	m := &Manager{
-		Alpha: alpha,
-		Self:  "a",
-		PSeqn: pseqn,
-		Ops:   st.Ops,
-		Out:   make(chan Packet),
-		run:   runs,
+		Alpha:	alpha,
+		Self:	"a",
+		PSeqn:	pseqn,
+		Ops:	st.Ops,
+		Out:	make(chan Packet),
+		run:	runs,
 	}
 	m.event(<-mustWait(st, 2))
 	m.event(<-mustWait(st, 3))
 
 	exp := &run{
-		self:  "a",
-		seqn:  3 + alpha,
-		cals:  []string{"a"},
-		addr:  []*net.UDPAddr{x},
-		ops:   st.Ops,
-		out:   m.Out,
-		bound: initialWaitBound,
+		self:	"a",
+		seqn:	3 + alpha,
+		cals:	[]string{"a"},
+		addr:	[]*net.UDPAddr{x},
+		ops:	st.Ops,
+		out:	m.Out,
+		bound:	initialWaitBound,
 	}
 	exp.c = coordinator{
-		crnd: 1,
-		size: 1,
-		quor: exp.quorum(),
+		crnd:	1,
+		size:	1,
+		quor:	exp.quorum(),
 	}
 	exp.l = learner{
-		round:  1,
-		size:   1,
-		quorum: int64(exp.quorum()),
-		votes:  map[string]int64{},
-		voted:  []bool{false},
+		round:	1,
+		size:	1,
+		quorum:	int64(exp.quorum()),
+		votes:	map[string]int64{},
+		voted:	[]bool{false},
 	}
 
 	assert.Equal(t, 2, len(runs))
@@ -376,12 +376,12 @@ func TestDelRun(t *testing.T) {
 
 	pseqn := make(chan int64, 100)
 	m := &Manager{
-		Alpha: alpha,
-		Self:  "a",
-		PSeqn: pseqn,
-		Ops:   st.Ops,
-		Out:   make(chan Packet),
-		run:   runs,
+		Alpha:	alpha,
+		Self:	"a",
+		PSeqn:	pseqn,
+		Ops:	st.Ops,
+		Out:	make(chan Packet),
+		run:	runs,
 	}
 	m.event(<-c2)
 	assert.Equal(t, 1, len(m.run))

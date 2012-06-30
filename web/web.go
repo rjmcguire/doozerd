@@ -3,7 +3,7 @@ package web
 import (
 	"code.google.com/p/go.net/websocket"
 	"encoding/json"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/store"
 	"io"
 	"log"
 	"net"
@@ -17,18 +17,18 @@ var Store *store.Store
 var ClusterName string
 
 var (
-	mainTpl  = template.Must(template.New("main.html").Parse(main_html))
-	statsTpl = template.Must(template.New("stats.html").Parse(stats_html))
+	mainTpl		= template.Must(template.New("main.html").Parse(main_html))
+	statsTpl	= template.Must(template.New("stats.html").Parse(stats_html))
 )
 
 type info struct {
-	Name string
-	Path string
+	Name	string
+	Path	string
 }
 
 type stringHandler struct {
-	contentType string
-	body        string
+	contentType	string
+	body		string
 }
 
 func (sh stringHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,7 @@ func Serve(listener net.Listener) {
 func send(ws *websocket.Conn, path string, evs <-chan store.Event) {
 	l := len(path) - 1
 	for ev := range evs {
-		ev.Getter = nil // don't marshal the entire snapshot
+		ev.Getter = nil	// don't marshal the entire snapshot
 		ev.Path = ev.Path[l:]
 		b, err := json.Marshal(ev)
 		if err != nil {

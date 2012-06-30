@@ -4,9 +4,9 @@ package doozerp_testing
 import (
 	"errors"
 	"fmt"
-	"github.com/ha/doozerd/persistence"
-	"github.com/ha/doozerd/persistence/doozerl"
-	"github.com/ha/doozerd/store"
+	"github.com/4ad/doozerd/persistence"
+	"github.com/4ad/doozerd/persistence/doozerl"
+	"github.com/4ad/doozerd/store"
 	"io"
 	"io/ioutil"
 	"os"
@@ -49,12 +49,12 @@ func decode(mut string) (k int, v string, err error) {
 }
 
 type Cluster struct {
-	conn          *doozerl.Conn
-	doozerd       *exec.Cmd
-	doozerp       *exec.Cmd
-	j             string
-	doozerdIsDead bool
-	doozerpIsDead bool
+	conn		*doozerl.Conn
+	doozerd		*exec.Cmd
+	doozerp		*exec.Cmd
+	j		string
+	doozerdIsDead	bool
+	doozerpIsDead	bool
 }
 
 func NewCluster(t *testing.T, doozerpArgs ...string) (c *Cluster) {

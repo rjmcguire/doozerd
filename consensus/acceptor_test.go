@@ -2,7 +2,7 @@ package consensus
 
 import (
 	"github.com/bmizerany/assert"
-	_ "github.com/ha/doozerd/quiet"
+	_ "github.com/4ad/doozerd/quiet"
 	"testing"
 )
 
@@ -83,9 +83,9 @@ func TestVotesOnlyOncePerRound(t *testing.T) {
 func TestAcceptorIgnoresBadMessages(t *testing.T) {
 	ac := acceptor{}
 
-	got := ac.update(&msg{Cmd: invite}) // missing Crnd
+	got := ac.update(&msg{Cmd: invite})	// missing Crnd
 	assert.Equal(t, (*msg)(nil), got)
 
-	got = ac.update(&msg{Cmd: nominate}) // missing Crnd
+	got = ac.update(&msg{Cmd: nominate})	// missing Crnd
 	assert.Equal(t, (*msg)(nil), got)
 }
