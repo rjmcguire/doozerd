@@ -74,6 +74,15 @@ func setid() {
 	}
 }
 
+// sets ephemeral key for other clients
+func seteph() {
+	_, rev, _ := conn.Get("/eph", nil)
+	_, err := conn.Set("/eph", rev, []byte("doozerp " + fmt.Sprint(id)))
+	if err != nil {
+		fatal(err)
+	}
+}
+
 func main() {
 	flag.Usage = usage
 	flag.Parse()
@@ -88,6 +97,8 @@ func main() {
 	if *r {
 		restore()
 	}
+	seteph()
+				
 	go Store()
 	go Notify()
 	monitor()
