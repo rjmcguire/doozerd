@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/4ad/doozer"
-	st "github.com/ha/doozerd/store"
+	st "github.com/ActiveState/doozerd/store"
 	"regexp"
 )
 

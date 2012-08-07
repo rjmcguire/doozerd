@@ -3,7 +3,7 @@ package web
 import (
 	"code.google.com/p/go.net/websocket"
 	"encoding/json"
-	"github.com/ha/doozerd/store"
+	"github.com/ActiveState/doozerd/store"
 	"io"
 	"log"
 	"net"

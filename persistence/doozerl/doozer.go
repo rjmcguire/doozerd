@@ -1,4 +1,4 @@
-// package doozer provides a github.com/ha/doozer compatible API to
+// package doozer provides a github.com/4ad/doozer compatible API to
 // interract with persitence clients.
 package doozerl
 

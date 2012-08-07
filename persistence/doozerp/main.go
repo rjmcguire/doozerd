@@ -10,7 +10,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/4ad/doozer"
-	"github.com/ha/doozerd/persistence"
+	"github.com/ActiveState/doozerd/persistence"
 	"os"
 	"strconv"
 )

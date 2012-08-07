@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ha/doozerd/persistence"
+	"github.com/ActiveState/doozerd/persistence"
 	"io"
 	"os"
 	"path"
