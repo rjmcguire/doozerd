@@ -5,8 +5,8 @@ import (
 	_ "expvar"
 	"flag"
 	"fmt"
-	"github.com/4ad/doozer"
-	"github.com/4ad/doozerd/peer"
+	"github.com/ha/doozer"
+	"github.com/ha/doozerd/peer"
 	"log"
 	"net"
 	"os"
@@ -27,24 +27,24 @@ func (a *strings) String() string {
 }
 
 var (
-	laddr		= flag.String("l", "127.0.0.1:8046", "The address to bind to.")
-	aaddrs		= strings{}
-	buri		= flag.String("b", "", "boot cluster uri (tried after -a)")
-	waddr		= flag.String("w", "", "web listen addr (default: see below)")
-	name		= flag.String("c", "local", "The non-empty cluster name.")
-	showVersion	= flag.Bool("v", false, "print doozerd's version string")
-	quiet		= flag.Bool("q", false, "do not log much on console")
-	pi		= flag.Float64("pulse", 1, "how often (in seconds) to set applied key")
-	fd		= flag.Float64("fill", .1, "delay (in seconds) to fill unowned seqns")
-	kt		= flag.Float64("timeout", 60, "timeout (in seconds) to kick inactive nodes")
-	hi		= flag.Int64("hist", 2000, "length of history/revisions to keep")
-	certFile	= flag.String("tlscert", "", "TLS public certificate")
-	keyFile		= flag.String("tlskey", "", "TLS private key")
+	laddr       = flag.String("l", "127.0.0.1:8046", "The address to bind to.")
+	aaddrs      = strings{}
+	buri        = flag.String("b", "", "boot cluster uri (tried after -a)")
+	waddr       = flag.String("w", "", "web listen addr (default: see below)")
+	name        = flag.String("c", "local", "The non-empty cluster name.")
+	showVersion = flag.Bool("v", false, "print doozerd's version string")
+	quiet       = flag.Bool("q", false, "do not log much on console")
+	pi          = flag.Float64("pulse", 1, "how often (in seconds) to set applied key")
+	fd          = flag.Float64("fill", .1, "delay (in seconds) to fill unowned seqns")
+	kt          = flag.Float64("timeout", 60, "timeout (in seconds) to kick inactive nodes")
+	hi          = flag.Int64("hist", 2000, "length of history/revisions to keep")
+	certFile    = flag.String("tlscert", "", "TLS public certificate")
+	keyFile     = flag.String("tlskey", "", "TLS private key")
 )
 
 var (
-	rwsk	= os.Getenv("DOOZER_RWSECRET")
-	rosk	= os.Getenv("DOOZER_ROSECRET")
+	rwsk = os.Getenv("DOOZER_RWSECRET")
+	rosk = os.Getenv("DOOZER_ROSECRET")
 )
 
 func init() {

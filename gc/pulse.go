@@ -1,8 +1,8 @@
 package gc
 
 import (
-	"github.com/4ad/doozerd/consensus"
-	"github.com/4ad/doozerd/store"
+	"github.com/ha/doozerd/consensus"
+	"github.com/ha/doozerd/store"
 	"log"
 	"strconv"
 	"time"

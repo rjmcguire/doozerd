@@ -1,13 +1,13 @@
 package peer
 
 import (
-	"github.com/4ad/doozer"
-	"github.com/4ad/doozerd/consensus"
-	"github.com/4ad/doozerd/gc"
-	"github.com/4ad/doozerd/member"
-	"github.com/4ad/doozerd/server"
-	"github.com/4ad/doozerd/store"
-	"github.com/4ad/doozerd/web"
+	"github.com/ha/doozer"
+	"github.com/ha/doozerd/consensus"
+	"github.com/ha/doozerd/gc"
+	"github.com/ha/doozerd/member"
+	"github.com/ha/doozerd/server"
+	"github.com/ha/doozerd/store"
+	"github.com/ha/doozerd/web"
 	"io"
 	"log"
 	"net"
@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	alpha		= 50
-	maxUDPLen	= 3000
+	alpha     = 50
+	maxUDPLen = 3000
 )
 
 const calDir = "/ctl/cal"
@@ -26,9 +26,9 @@ const calDir = "/ctl/cal"
 var calGlob = store.MustCompileGlob(calDir + "/*")
 
 type proposer struct {
-	seqns	chan int64
-	props	chan *consensus.Prop
-	st	*store.Store
+	seqns chan int64
+	props chan *consensus.Prop
+	st    *store.Store
 }
 
 func (p *proposer) Propose(v []byte) (e store.Event) {
@@ -36,7 +36,7 @@ func (p *proposer) Propose(v []byte) (e store.Event) {
 		n := <-p.seqns
 		w, err := p.st.Wait(store.Any, n)
 		if err != nil {
-			panic(err)	// can't happen
+			panic(err) // can't happen
 		}
 		p.props <- &consensus.Prop{n, v}
 		e = <-w
@@ -53,9 +53,9 @@ func Main(clusterName, self, buri, rwsk, rosk string, cl *doozer.Conn, udpConn *
 
 	st := store.New()
 	pr := &proposer{
-		seqns:	make(chan int64, alpha),
-		props:	make(chan *consensus.Prop),
-		st:	st,
+		seqns: make(chan int64, alpha),
+		props: make(chan *consensus.Prop),
+		st:    st,
 	}
 
 	calSrv := func(start int64) {
@@ -81,7 +81,7 @@ func Main(clusterName, self, buri, rwsk, rosk string, cl *doozer.Conn, udpConn *
 		hostname = "unknown"
 	}
 
-	if cl == nil {	// we are the only node in a new cluster
+	if cl == nil { // we are the only node in a new cluster
 		set(st, "/ctl/name", clusterName, store.Missing)
 		set(st, "/ctl/node/"+self+"/addr", listenAddr, store.Missing)
 		set(st, "/ctl/node/"+self+"/hostname", hostname, store.Missing)
@@ -149,7 +149,7 @@ func Main(clusterName, self, buri, rwsk, rosk string, cl *doozer.Conn, udpConn *
 		}()
 	}
 
-	shun := make(chan string, 3)	// sufficient for a cluster of 7
+	shun := make(chan string, 3) // sufficient for a cluster of 7
 	go member.Clean(shun, st, pr)
 	go server.ListenAndServe(self, listener, canWrite, st, pr, rwsk, rosk)
 
@@ -178,10 +178,10 @@ func Main(clusterName, self, buri, rwsk, rosk string, cl *doozer.Conn, udpConn *
 		panic("no UDP addr")
 	}
 	lv := liveness{
-		timeout:	kickTimeout,
-		ival:		kickTimeout / 2,
-		self:		selfAddr,
-		shun:		shun,
+		timeout: kickTimeout,
+		ival:    kickTimeout / 2,
+		self:    selfAddr,
+		shun:    shun,
 	}
 	for {
 		t := time.Now().UnixNano()
@@ -288,8 +288,8 @@ func follow(st *store.Store, cl *doozer.Conn, rev int64, stop chan bool) {
 }
 
 type cloner struct {
-	ch	chan<- store.Op
-	cl	*doozer.Conn
+	ch chan<- store.Op
+	cl *doozer.Conn
 }
 
 func (c cloner) VisitDir(path string, f *doozer.FileInfo) bool {

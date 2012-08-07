@@ -3,12 +3,12 @@
 package doozerl
 
 import (
-	"github.com/4ad/doozer"
+	"github.com/ha/doozer"
 )
 
 type Conn struct {
 	*doozer.Conn
-	Id	string
+	Id string
 }
 
 func Dial(addr string) (*Conn, error) {
