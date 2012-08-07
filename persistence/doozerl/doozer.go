@@ -3,7 +3,7 @@
 package doozerl
 
 import (
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 )
 
 type Conn struct {

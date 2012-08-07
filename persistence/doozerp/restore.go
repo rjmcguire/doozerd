@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 	"io"
 	"strconv"
 	"strings"

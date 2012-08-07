@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 )
 
 // A mutation is the pair of the human readable and binary

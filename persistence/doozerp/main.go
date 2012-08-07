@@ -9,7 +9,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 	"github.com/ha/doozerd/persistence"
 	"os"
 	"strconv"

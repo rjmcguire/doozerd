@@ -5,7 +5,7 @@ import (
 	_ "expvar"
 	"flag"
 	"fmt"
-	"github.com/ha/doozer"
+	"github.com/4ad/doozer"
 	"github.com/ha/doozerd/peer"
 	"log"
 	"net"
